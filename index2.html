@@ -7,7 +7,6 @@
 
   <style>
       video {
-          width: 80%    !important;
        }
       #results{
         visibility: hidden;
@@ -99,7 +98,7 @@ function uploadcomplete(event){
       var c = document.getElementById("Sadness");
       var ctx = c.getContext("2d");
       ctx.beginPath();
-      ctx.fillStyle = "blue"
+      ctx.fillStyle = "steelblue"
       ctx.arc(100, 75, 50, 0, 2 * Math.PI);
       ctx.fill();
 
@@ -113,8 +112,8 @@ function uploadcomplete(event){
     var c = document.getElementById(emotions[idx]);
       var ctx = c.getContext("2d");
       ctx.beginPath();
-      ctx.fillStyle = "green"
-      ctx.arc(100, 75, 50, 0, 2 * Math.PI);
+      ctx.fillStyle = "rgba(0,0,0,0.3)"
+      ctx.arc(100, 75, 45, 0, 2 * Math.PI);
       ctx.fill();
   }
   setTimeout(take_snapshot, 5000)
@@ -125,7 +124,7 @@ function changeSize(){}
 function ShowCam(){
   Webcam.set({
     width: 320,
-    height: 240,
+    height: 320,
     image_format: 'jpeg',
     jpeg_quality: 100
   });
@@ -163,9 +162,9 @@ window.onload = function(){
     <div class="section no-pad-bot">
       <div class="container">
         <br><br>
-        <h1 class="header center teal-text text-lighten-2">Face to sound</h1>
+        <h1 class="header center teal-text text-lighten-2" style="color: rgba(255,255,255,1) !important; text-size: 800%">Face » sound</h1>
         <div class="row center">
-          <h5 class="header col s12 light">The recognizer of emoctions that sign for you!</h5>
+          <h5 class="header col s12 light">The recognizer of emoctions that sings for you!</h5>
         </div>
         <!-- <div class="row center">
           <a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light teal lighten-1">Get Started</a>
@@ -184,10 +183,10 @@ window.onload = function(){
       <!--   Icon Section   -->
       <div class="row">
         <div class="col s12 m4">
-          <div class="icon-block">
+          <div class="icon-block" style="text-align: center;">
             <!-- <h2 class="center brown-text"><i class="material-icons">flash_on</i></h2> -->
             <h5 class="center">Happiness</h5>
-            <canvas id="Happiness"></canvas>
+            <canvas id="Happiness"  width="200" height="150"></canvas>
             <h5 class="center">Anger</h5>
             <canvas id="Anger" width="200" height="150" ></canvas>
             <div class="container" id="Saved">
@@ -196,19 +195,19 @@ window.onload = function(){
           </div>
         </div>
 
-        <div class="col s12 m4">
+        <div class="col s12 m4" style="margin-top: 5%;">
           <div class="icon-block">
             <!-- <h2 class="center brown-text"><i class="material-icons">group</i></h2> -->
             <h5 class="center">Webcam recognizer</h5>
 
-              <div id="my_camera"></div>
+              <div id="my_camera"  style="border-radius: 100%"></div>
 
             <!-- <p class="light">By utilizing elements and principles of Material Design, we were able to create a framework that incorporates components and animations that provide more feedback to users. Additionally, a single underlying responsive system across all platforms allow for a more unified user experience.</p> -->
           </div>
         </div>
 
         <div class="col s12 m4">
-          <div class="icon-block">
+          <div class="icon-block" style="text-align: center;">
             <!-- <h2 class="center brown-text"><i class="material-icons">settings</i></h2> -->
             <h5 class="center">Sadness</h5>
             <canvas id="Sadness" width="200" height="150" ></canvas>
@@ -288,7 +287,7 @@ window.onload = function(){
       var c = document.getElementById("Sadness");
       var ctx = c.getContext("2d");
       ctx.beginPath();
-      ctx.fillStyle = "blue"
+      ctx.fillStyle = "steelblue"
       ctx.arc(100, 75, 50, 0, 2 * Math.PI);
       ctx.fill();
 
