@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Face to sound - HackCortona2017</title>
+
+  <style>
+      video {
+          width: 80%    !important;
+       }
+      #results{
+        visibility: hidden;
+      }
+   </style>
+
+  <script language="JavaScript">
+  function take_snapshot() {
+    Webcam.snap(function(data_uri) {
+    document.getElementById('results').innerHTML = '<img id="base64image" src="'+data_uri+'"/><button onclick="SaveSnap();">Analyze</button>';
+	  //document.getElementById("loading").innerHTML="Analyzing, please wait...";
+    var file = document.getElementById("base64image").src.substring(23).replace(' ', '+');
+	  var img = Base64Binary.decodeArrayBuffer(file);
+    var ajax = new XMLHttpRequest();
+    ajax.addEventListener("load", function(event) { uploadcomplete(event);}, false);
+    ajax.open("POST", "https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize","image/jpg");
+	ajax.setRequestHeader("Content-Type","application/octet-stream");
+	//ajax.setRequestHeader("Accept-Encoding","gzip, deflate");
+	ajax.setRequestHeader("Accept","text/html,application/xhtml+xml,application/xml");
+	ajax.setRequestHeader("Ocp-Apim-Subscription-Key","5203ed3165a146c2a0e877ed242b6d03");
+	ajax.send(img);
+});
+}
+function SaveSnap(){
+    //document.getElementById("loading").innerHTML="Analyzing, please wait...";
+    var file = document.getElementById("base64image").src.substring(23).replace(' ', '+');
+	var img = Base64Binary.decodeArrayBuffer(file);
+    var ajax = new XMLHttpRequest();
+    ajax.addEventListener("load", function(event) { uploadcomplete(event);}, false);
+    ajax.open("POST", "https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize","image/jpg");
+	ajax.setRequestHeader("Content-Type","application/octet-stream");
+	//ajax.setRequestHeader("Accept-Encoding","gzip, deflate");
+	ajax.setRequestHeader("Accept","text/html,application/xhtml+xml,application/xml");
+	ajax.setRequestHeader("Ocp-Apim-Subscription-Key","5203ed3165a146c2a0e877ed242b6d03");
+	ajax.send(img);
+}
+function uploadcomplete(event){
+    //document.getElementById("loading").innerHTML="Compleated";
+	var xmlDoc=event.target.responseXML;
+	var list = xmlDoc.getElementsByTagName("scores");
+  if(list != undefined){
+    m = []
+    for(i=0;i<8;i++){
+      //document.getElementById("chart").children[i].style.color = "black"
+      m[i] = Number(list[0].childNodes[i].textContent)
+    }
+    maxval = Math.max(...m)
+    idx = m.indexOf(maxval)
+
+    emotions = ["Anger","Anger","Anger","Sadness","Happiness","Neutral","Sadness","Happiness"]
+    // document.getElementById("anger").innerHTML = list[0].childNodes[0].textContent;
+  	// document.getElementById("contempt").innerHTML = list[0].childNodes[1].textContent;
+  	// document.getElementById("disgust").innerHTML = list[0].childNodes[2].textContent;
+  	// document.getElementById("fear").innerHTML = list[0].childNodes[3].textContent;
+  	// document.getElementById("happiness").innerHTML = list[0].childNodes[4].textContent;
+  	// document.getElementById("neutral").innerHTML = list[0].childNodes[5].textContent;
+  	// document.getElementById("sadness").innerHTML = list[0].childNodes[6].textContent;
+  	// document.getElementById("surprise").innerHTML = list[0].childNodes[7].textContent;
+    console.log(emotions[idx])
+    document.getElementById(emotions[idx]).style.height = 200
+  }
+  setTimeout(take_snapshot, 3000)
+}
+
+function changeSize(){}
+
+function ShowCam(){
+  Webcam.set({
+    width: 320,
+    height: 240,
+    image_format: 'jpeg',
+    jpeg_quality: 100
+  });
+  Webcam.attach('#my_camera');
+  setTimeout(take_snapshot, 2000);
+}
+
+window.onload = function(){
+  ShowCam();
+}
+</script>
+
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+  <nav class="white" role="navigation">
+    <div class="nav-wrapper container">
+      <a id="logo-container" href="#" class="brand-logo">HackCortona2017</a>
+      <!-- <ul class="right hide-on-med-and-down">
+        <li><a href="#">Navbar Link</a></li>
+      </ul> -->
+
+      <!-- <ul id="nav-mobile" class="side-nav">
+        <li><a href="#">Navbar Link</a></li>
+      </ul> -->
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+
+  <div id="index-banner" class="parallax-container">
+    <div class="section no-pad-bot">
+      <div class="container">
+        <br><br>
+        <h1 class="header center teal-text text-lighten-2">Face to sound</h1>
+        <div class="row center">
+          <h5 class="header col s12 light">The recognizer of emoctions that sign for you!</h5>
+        </div>
+        <!-- <div class="row center">
+          <a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light teal lighten-1">Get Started</a>
+        </div> -->
+        <br><br>
+
+      </div>
+    </div>
+    <div class="parallax"><img src="background1.jpg" alt="Unsplashed background img 1"></div>
+  </div>
+
+
+  <div class="container">
+    <div class="section">
+
+      <!--   Icon Section   -->
+      <div class="row">
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <!-- <h2 class="center brown-text"><i class="material-icons">flash_on</i></h2> -->
+            <h5 class="center">Happiness</h5>
+            <canvas id="Happiness"></canvas>
+            <h5 class="center">Anger</h5>
+            <canvas id="Anger" width="200" height="150" ></canvas>
+            <div class="container" id="Saved">
+          </div>
+            <!-- <p class="light">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p> -->
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <!-- <h2 class="center brown-text"><i class="material-icons">group</i></h2> -->
+            <h5 class="center">Webcam recognizer</h5>
+
+              <div id="my_camera"></div>
+
+            <!-- <p class="light">By utilizing elements and principles of Material Design, we were able to create a framework that incorporates components and animations that provide more feedback to users. Additionally, a single underlying responsive system across all platforms allow for a more unified user experience.</p> -->
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <!-- <h2 class="center brown-text"><i class="material-icons">settings</i></h2> -->
+            <h5 class="center">Sadness</h5>
+            <canvas id="Sadness" width="200" height="150" ></canvas>
+            <h5 class="center">Neutral</h5>
+            <canvas id="Neutral" width="200" height="150" ></canvas>
+
+            <!-- <p class="light">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p> -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="page-footer teal">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Company Bio</h5>
+          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+
+
+        </div>
+        <!-- <div class="col l3 s12">
+          <h5 class="white-text">Settings</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div> -->
+        <!-- <div class="col l3 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div> -->
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      <div id="results" hidden>
+      </div>
+      Made by <a class="brown-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script type="text/javascript" src="webcam.min.js"></script>
+  <script type="text/javascript" src="base64-binary.js"></script>
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="js/materialize.js"></script>
+  <script src="js/init.js"></script>
+  <script src="music.js"></script>
+  <script src="js/Tone.js"></script>
+  <script>
+      var c = document.getElementById("Happiness");
+      var ctx = c.getContext("2d");
+      ctx.beginPath();
+      ctx.fillStyle = "#ffdb3a"
+      ctx.arc(100, 75, 50, 0, 2 * Math.PI);
+      ctx.fill();
+
+      var c = document.getElementById("Anger");
+      var ctx = c.getContext("2d");
+      ctx.beginPath();
+      ctx.fillStyle = "red"
+      ctx.arc(100, 75, 50, 0, 2 * Math.PI);
+      ctx.fill();
+
+      var c = document.getElementById("Sadness");
+      var ctx = c.getContext("2d");
+      ctx.beginPath();
+      ctx.fillStyle = "blue"
+      ctx.arc(100, 75, 50, 0, 2 * Math.PI);
+      ctx.fill();
+
+      var c = document.getElementById("Neutral");
+      var ctx = c.getContext("2d");
+      ctx.fillStyle = "#8ab786"
+      ctx.beginPath();
+      ctx.arc(100, 75, 50, 0, 2 * Math.PI);
+      ctx.fill();
+
+      </script>
+  </body>
+</html>
