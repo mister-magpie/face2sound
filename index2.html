@@ -48,7 +48,7 @@ function uploadcomplete(event){
     //document.getElementById("loading").innerHTML="Compleated";
 	var xmlDoc=event.target.responseXML;
 	var list = xmlDoc.getElementsByTagName("scores");
-  if(list != undefined){
+  if(list !== null && typeof list !== "undefined"){
     m = []
     for(i=0;i<8;i++){
       //document.getElementById("chart").children[i].style.color = "black"
@@ -67,9 +67,57 @@ function uploadcomplete(event){
   	// document.getElementById("sadness").innerHTML = list[0].childNodes[6].textContent;
   	// document.getElementById("surprise").innerHTML = list[0].childNodes[7].textContent;
     console.log(emotions[idx])
-    document.getElementById(emotions[idx]).style.height = 200
+    //document.getElementById(emotions[idx]).style.height = 200
+    em = emotions[idx]
+    if (em == "Happiness") {
+      makeHappy()
+    }
+    if (em == "Sadness") {
+      makeSad()
+    }
+    if (em == "Anger") {
+      makeAngry()
+    }
+    if (em == "Neutral") {
+      //console.log("it's neutral do nothing")
+      makeNeutral()
+    }
+    var c = document.getElementById("Happiness");
+      var ctx = c.getContext("2d");
+      ctx.beginPath();
+      ctx.fillStyle = "#ffdb3a"
+      ctx.arc(100, 75, 50, 0, 2 * Math.PI);
+      ctx.fill();
+
+      var c = document.getElementById("Anger");
+      var ctx = c.getContext("2d");
+      ctx.beginPath();
+      ctx.fillStyle = "red"
+      ctx.arc(100, 75, 50, 0, 2 * Math.PI);
+      ctx.fill();
+
+      var c = document.getElementById("Sadness");
+      var ctx = c.getContext("2d");
+      ctx.beginPath();
+      ctx.fillStyle = "blue"
+      ctx.arc(100, 75, 50, 0, 2 * Math.PI);
+      ctx.fill();
+
+      var c = document.getElementById("Neutral");
+      var ctx = c.getContext("2d");
+      ctx.fillStyle = "#8ab786"
+      ctx.beginPath();
+      ctx.arc(100, 75, 50, 0, 2 * Math.PI);
+      ctx.fill();
+    var c =document.getElementById(emotions[idx]).style.height = 200
+    var c = document.getElementById(emotions[idx]);
+      var ctx = c.getContext("2d");
+      ctx.beginPath();
+      ctx.fillStyle = "green"
+      ctx.arc(100, 75, 50, 0, 2 * Math.PI);
+      ctx.fill();
   }
-  setTimeout(take_snapshot, 3000)
+  setTimeout(take_snapshot, 5000)
 }
 
 function changeSize(){}
